@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AddTodo from './components/AddTodo';
 import TodoList from './components/TodoList';
 
@@ -14,78 +14,39 @@ interface Todo {
 
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch todos on page load
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const response = await fetch('/api/todos');
-        const data = await response.json();
-        setTodos(data);
-      } catch (error) {
-        console.error('Error fetching todos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTodos();
-  }, []);
+  const [nextId, setNextId] = useState(1);
 
   // Add new todo
-  const handleAddTodo = async (title: string) => {
-    try {
-      const response = await fetch('/api/todos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title }),
-      });
-      const newTodo = await response.json();
-      setTodos([newTodo, ...todos]);
-    } catch (error) {
-      console.error('Error adding todo:', error);
-    }
+  const handleAddTodo = (title: string) => {
+    const newTodo: Todo = {
+      id: nextId,
+      title,
+      completed: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    setTodos([newTodo, ...todos]);
+    setNextId(nextId + 1);
   };
 
   // Toggle todo completion
-  const handleToggleTodo = async (id: number, completed: boolean) => {
-    try {
-      const response = await fetch(`/api/todos/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ completed }),
-      });
-      const updatedTodo = await response.json();
-      setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
-    } catch (error) {
-      console.error('Error updating todo:', error);
-    }
+  const handleToggleTodo = (id: number, completed: boolean) => {
+    setTodos(todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          completed,
+          updatedAt: new Date(),
+        };
+      }
+      return todo;
+    }));
   };
 
   // Delete todo
-  const handleDeleteTodo = async (id: number) => {
-    try {
-      await fetch(`/api/todos/${id}`, {
-        method: 'DELETE',
-      });
-      setTodos(todos.filter((todo) => todo.id !== id));
-    } catch (error) {
-      console.error('Error deleting todo:', error);
-    }
+  const handleDeleteTodo = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="text-xl text-gray-500">Loading...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
