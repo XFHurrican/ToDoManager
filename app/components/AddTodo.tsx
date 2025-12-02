@@ -67,12 +67,24 @@ export default function AddTodo({ onAddTodo, fileResources }: AddTodoProps) {
           placeholder="Add a new todo..."
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
-        <input
-          type="datetime-local"
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
+        <div className="relative">
+          {/* Hidden input that actually stores the datetime value */}
+          <input
+            type="datetime-local"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+            lang="en"
+          />
+          {/* Custom visible input that shows our English placeholder */}
+          <div className="px-4 py-2 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent cursor-pointer">
+            {deadline ? (
+              <span className="text-gray-900">{deadline.replace('T', ' ')}</span>
+            ) : (
+              <span className="text-gray-400">yyyy/mm/dd --:--</span>
+            )}
+          </div>
+        </div>
         <button
           type="button"
           onClick={() => setShowFileSelector(!showFileSelector)}
@@ -91,7 +103,7 @@ export default function AddTodo({ onAddTodo, fileResources }: AddTodoProps) {
       {/* File selector dropdown */}
       {showFileSelector && fileResources.length > 0 && (
         <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
-          <h3 className="text-sm font-medium text-gray-700 mb-3">选择文件（可多选）</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-3">Select Files (Multi-select)</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-40 overflow-y-auto">
             {fileResources.map((file) => (
               <label
@@ -114,7 +126,7 @@ export default function AddTodo({ onAddTodo, fileResources }: AddTodoProps) {
 
       {showFileSelector && fileResources.length === 0 && (
         <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
-          <p className="text-sm text-gray-500">资源池暂无文件，请先上传文件</p>
+          <p className="text-sm text-gray-500">No files in resource pool yet. Please upload files first.</p>
         </div>
       )}
     </form>

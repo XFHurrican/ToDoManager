@@ -125,14 +125,14 @@ export default function Home() {
         {/* Navigation */}
         <div className="mb-6 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Todo App</h1>
-            <p className="text-gray-600">A simple and elegant todo application with resource pool</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Todo Manager</h1>
+            <p className="text-gray-600">A simple and elegant todo application with resource management</p>
           </div>
           <Link 
             href="/resources" 
             className="inline-flex items-center gap-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
-            管理资源池 →
+            Manage Resources →
           </Link>
         </div>
 

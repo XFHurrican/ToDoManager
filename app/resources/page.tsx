@@ -93,13 +93,13 @@ export default function ResourcesPage() {
             href="/" 
             className="inline-flex items-center gap-1 text-blue-500 hover:text-blue-700 transition-colors"
           >
-            ← 返回Todo列表
+            ← Back to Todo List
           </Link>
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">资源池管理</h1>
-          <p className="text-gray-600">上传和管理文件资源，供Todo项引用</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Resource Manager</h1>
+          <p className="text-gray-600">Upload and manage file resources for Todo items</p>
         </div>
 
         {/* File Resource Pool */}

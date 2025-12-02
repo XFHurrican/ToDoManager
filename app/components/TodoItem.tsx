@@ -25,7 +25,7 @@ interface TodoItemProps {
 export default function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   // Format date to a readable string, precise to minute
   const formatDate = (date: Date): string => {
-    return new Date(date).toLocaleString([], { 
+    return new Date(date).toLocaleString('en', { 
       year: 'numeric', 
       month: '2-digit', 
       day: '2-digit', 

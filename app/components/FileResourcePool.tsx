@@ -20,7 +20,7 @@ export default function FileResourcePool({
   onDeleteFile,
 }: FileResourcePoolProps) {
   const formatDate = (date: Date): string => {
-    return new Date(date).toLocaleString([], {
+    return new Date(date).toLocaleString('en', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -53,28 +53,28 @@ export default function FileResourcePool({
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-gray-900">资源池</h2>
-        <div className="flex items-center gap-2">
-          <input
-            type="file"
-            id="file-upload"
-            multiple
-            onChange={handleFileChange}
-            className="hidden"
-            accept=".doc,.docx,.xls,.xlsx,.pdf,.jpg,.jpeg,.png"
-          />
-          <label
-            htmlFor="file-upload"
-            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors cursor-pointer"
-          >
-            上传文件
-          </label>
+          <h2 className="text-xl font-semibold text-gray-900">Resource Pool</h2>
+          <div className="flex items-center gap-2">
+            <input
+              type="file"
+              id="file-upload"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+              accept=".doc,.docx,.xls,.xlsx,.pdf,.jpg,.jpeg,.png"
+            />
+            <label
+              htmlFor="file-upload"
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors cursor-pointer"
+            >
+              Upload Files
+            </label>
+          </div>
         </div>
-      </div>
 
       {fileResources.length === 0 ? (
         <div className="p-6 bg-gray-50 border border-dashed border-gray-300 rounded-lg text-center">
-          <p className="text-gray-500">暂无文件资源，点击上方按钮上传文件</p>
+          <p className="text-gray-500">No file resources yet. Click the button above to upload files.</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
@@ -82,16 +82,16 @@ export default function FileResourcePool({
             <thead>
               <tr className="bg-gray-50">
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  类型
+                  Type
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  文件名
+                  Filename
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  上传时间
+                  Upload Time
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  操作
+                  Actions
                 </th>
               </tr>
             </thead>
@@ -116,13 +116,13 @@ export default function FileResourcePool({
                         rel="noopener noreferrer"
                         className="text-blue-500 hover:text-blue-700"
                       >
-                        预览
+                        Preview
                       </a>
                       <button
                         onClick={() => onDeleteFile(file.id)}
                         className="text-red-500 hover:text-red-700"
                       >
-                        删除
+                        Delete
                       </button>
                     </div>
                   </td>
