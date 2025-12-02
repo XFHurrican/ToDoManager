@@ -6,6 +6,7 @@ interface Todo {
   completed: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deadline?: Date;
 }
 
 interface TodoListProps {
@@ -23,9 +24,23 @@ export default function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
     );
   }
 
+  // Sort todos by deadline: 
+  // 1. Todos with deadline come first
+  // 2. Todos with deadline are sorted by deadline time (closest first)
+  // 3. Todos without deadline come last
+  const sortedTodos = [...todos].sort((a, b) => {
+    // Handle case where one has deadline and the other doesn't
+    if (a.deadline && !b.deadline) return -1;
+    if (!a.deadline && b.deadline) return 1;
+    if (!a.deadline && !b.deadline) return 0;
+    
+    // Both have deadline, sort by deadline time
+    return new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime();
+  });
+
   return (
     <div className="space-y-2">
-      {todos.map((todo) => (
+      {sortedTodos.map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}

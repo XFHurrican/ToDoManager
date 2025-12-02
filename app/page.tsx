@@ -10,6 +10,7 @@ interface Todo {
   completed: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deadline?: Date;
 }
 
 export default function Home() {
@@ -17,13 +18,14 @@ export default function Home() {
   const [nextId, setNextId] = useState(1);
 
   // Add new todo
-  const handleAddTodo = (title: string) => {
+  const handleAddTodo = (title: string, deadline?: Date) => {
     const newTodo: Todo = {
       id: nextId,
       title,
       completed: false,
       createdAt: new Date(),
       updatedAt: new Date(),
+      deadline,
     };
     setTodos([newTodo, ...todos]);
     setNextId(nextId + 1);
@@ -63,9 +65,7 @@ export default function Home() {
           onDelete={handleDeleteTodo}
         />
 
-        <div className="mt-8 text-center text-gray-500 text-sm">
-          <p>Built with Next.js, Prisma, and Tailwind CSS</p>
-        </div>
+
       </main>
     </div>
   );
