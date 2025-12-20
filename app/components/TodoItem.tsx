@@ -16,6 +16,11 @@ interface Todo {
   files: FileResource[];
 }
 
+'use client';
+
+import { useState } from 'react';
+import PreviewModal from './PreviewModal';
+
 interface TodoItemProps {
   todo: Todo;
   onToggle: (id: number, completed: boolean) => void;
@@ -23,6 +28,8 @@ interface TodoItemProps {
 }
 
 export default function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
+  const [previewFile, setPreviewFile] = useState<FileResource | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   // Format date to a readable string, precise to minute
   const formatDate = (date: Date): string => {
     return new Date(date).toLocaleString('en', { 
@@ -46,6 +53,18 @@ export default function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
     } else {
       return '📎';
     }
+  };
+
+  const handlePreview = (file: FileResource, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPreviewFile(file);
+    setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+    setPreviewFile(null);
   };
 
   return (
@@ -78,16 +97,14 @@ export default function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
               {todo.files.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {todo.files.map((file) => (
-                    <a
+                    <button
                       key={file.id}
-                      href={file.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs hover:bg-blue-100 transition-colors"
+                      onClick={(e) => handlePreview(file, e)}
+                      className="flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs hover:bg-blue-100 transition-colors cursor-pointer"
                     >
                       <span>{getFileIcon(file.type)}</span>
                       <span>{file.name}</span>
-                    </a>
+                    </button>
                   ))}
                 </div>
               )}
@@ -101,6 +118,13 @@ export default function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
           Delete
         </button>
       </div>
+
+      {/* 预览模态框 */}
+      <PreviewModal
+        file={previewFile}
+        isOpen={isPreviewOpen}
+        onClose={handleClosePreview}
+      />
     </div>
   );
 }

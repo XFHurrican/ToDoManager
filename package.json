@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",
+    "mammoth": "^1.11.0",
     "next": "14.2.15",
     "prisma": "^5.18.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

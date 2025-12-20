@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import PreviewModal from './PreviewModal';
 
 interface FileResource {
   id: number;
@@ -19,6 +22,8 @@ export default function FileResourcePool({
   onAddFile,
   onDeleteFile,
 }: FileResourcePoolProps) {
+  const [previewFile, setPreviewFile] = useState<FileResource | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const formatDate = (date: Date): string => {
     return new Date(date).toLocaleString('en', {
       year: 'numeric',
@@ -48,6 +53,16 @@ export default function FileResourcePool({
     if (files && files.length > 0) {
       Array.from(files).forEach((file) => onAddFile(file));
     }
+  };
+
+  const handlePreview = (file: FileResource) => {
+    setPreviewFile(file);
+    setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+    setPreviewFile(null);
   };
 
   return (
@@ -110,19 +125,17 @@ export default function FileResourcePool({
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
                     <div className="flex gap-2">
-                      <a
-                        href={file.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-700"
+                      <button
+                        onClick={() => handlePreview(file)}
+                        className="text-blue-500 hover:text-blue-700 transition-colors"
                       >
-                        Preview
-                      </a>
+                        预览
+                      </button>
                       <button
                         onClick={() => onDeleteFile(file.id)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700 transition-colors"
                       >
-                        Delete
+                        删除
                       </button>
                     </div>
                   </td>
@@ -132,6 +145,13 @@ export default function FileResourcePool({
           </table>
         </div>
       )}
+
+      {/* 预览模态框 */}
+      <PreviewModal
+        file={previewFile}
+        isOpen={isPreviewOpen}
+        onClose={handleClosePreview}
+      />
     </div>
   );
 }
